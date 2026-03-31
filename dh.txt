@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&H Realty | Hệ Thống Bất Động Sản Toàn Diện</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-green: #1a5d1a;
+            --brand-green-light: #2eb82e;
+            --brand-brown: #4a3728;
+            --brand-brown-light: #8b5e3c;
+            --dark: #070907;
+            --dark-card: #0f130f;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: #f0f0f0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .noise::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .glass {
+            background: rgba(15, 19, 15, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            line-height: 1;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .nav-link { position: relative; cursor: pointer; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
+            background: var(--brand-green-light);
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after, .nav-link:hover::after { width: 100%; }
+
+        .page-content {
+            display: none;
+            opacity: 0;
+        }
+        .page-content.active {
+            display: block;
+        }
+
+        .project-card {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--brand-green-light);
+        }
+
+        #cursor {
+            width: 20px; height: 20px;
+            border: 2px solid var(--brand-green-light);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+        }
+
+        .stat-number {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--brand-green-light);
+        }
+
+        iframe {
+            filter: grayscale(1) invert(1) contrast(1.2);
+        }
+    </style>
+</head>
+<body class="noise">
+    <div id="cursor"></div>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="fixed top-0 w-full z-[100] px-6 py-4 flex justify-between items-center glass border-b border-white/5">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="showPage('home')">
+            <div class="flex flex-col leading-none font-black text-2xl tracking-tighter">
+                <span style="color: var(--brand-green-light)">D&H</span>
+                <span style="color: var(--brand-brown-light); font-size: 0.6rem; letter-spacing: 0.2rem">REALTY</span>
+            </div>
+        </div>
+        
+        <div class="hidden lg:flex gap-8 text-[11px] font-bold uppercase tracking-[0.15em]">
+            <span onclick="showPage('home')" class="nav-link active" data-page="home">Trang chủ</span>
+            <span onclick="showPage('about')" class="nav-link" data-page="about">Về chúng tôi</span>
+            <span onclick="showPage('projects')" class="nav-link" data-page="projects">Dự án</span>
+            <span onclick="showPage('news')" class="nav-link" data-page="news">Tin tức</span>
+            <span onclick="showPage('contact')" class="nav-link" data-page="contact">Liên hệ</span>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <a href="tel:0816455288" class="bg-[#1a5d1a] px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-[#2eb82e] transition-all">
+                0816.455.288
+            </a>
+        </div>
+    </nav>
+
+    <!-- PAGE: HOME -->
+    <main id="page-home" class="page-content active">
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center px-8 md:px-20 pt-20">
+            <div class="grid lg:grid-cols-2 gap-10 items-center w-full">
+                <div>
+                    <p class="text-[#2eb82e] uppercase tracking-[0.4em] mb-4 text-xs font-bold">Kiến tạo cuộc sống thịnh vượng</p>
+                    <h1 class="hero-title mb-8">D&H REALTY<br><span class="text-white/20">GROUP</span></h1>
+                    <p class="max-w-md text-white/50 leading-relaxed mb-10">Chúng tôi tự hào là đơn vị top đầu trong việc phân phối và phát triển các dòng sản phẩm Bất động sản cao cấp, nhà ở xã hội và đất nền trên toàn quốc.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="showPage('projects')" class="px-8 py-4 bg-[#1a5d1a] rounded-xl font-bold uppercase text-xs hover:shadow-[0_0_20px_rgba(46,184,46,0.3)] transition-all">Xem tất cả dự án</button>
+                        <button onclick="showPage('contact')" class="px-8 py-4 border border-white/10 rounded-xl font-bold uppercase text-xs hover:bg-white/5 transition-all">Liên hệ tư vấn</button>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="w-full aspect-[4/3] rounded-[3rem] overflow-hidden border border-white/5 relative group">
+                        <img id="hero-img" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-1000" alt="D&H Realty Projects">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <div class="absolute bottom-10 left-10">
+                            <p class="text-[10px] text-[#2eb82e] font-bold mb-2 tracking-widest uppercase">Dự án tâm điểm</p>
+                            <h4 class="font-bold text-2xl leading-tight text-white">QMS Top Tower</h4>
+                            <p class="text-white/40 text-xs">Ngã tư Tố Hữu - Vũ Trọng Khánh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 border-y border-white/5 bg-white/[0.02]">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-10 text-center">
+                <div><div class="stat-number" data-target="10">0</div><p class="text-[10px] uppercase font-bold text-white/40">Năm phát triển</p></div>
+                <div><div class="stat-number" data-target="60">0</div><p class="text-[10px] uppercase font-bold text-white/40">Dự án đã triển khai</p></div>
+                <div><div class="stat-number" data-target="800">0</div><p class="text-[10px] uppercase font-bold text-white/40">Cộng tác viên & Nhân sự</p></div>
+                <div><div class="stat-number" data-target="25000">0</div><p class="text-[10px] uppercase font-bold text-white/40">Khách hàng hài lòng</p></div>
+            </div>
+        </section>
+
+        <!-- Featured Projects (Clone of Projects Section) -->
+        <section class="py-32 px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-end mb-16">
+                    <div>
+                        <span class="text-[#2eb82e] font-bold uppercase tracking-widest text-xs">Lựa chọn hàng đầu</span>
+                        <h3 class="text-4xl font-black mt-2 uppercase">DỰ ÁN TIÊU BIỂU</h3>
+                    </div>
+                    <button onclick="showPage('projects')" class="text-[10px] font-bold uppercase border-b border-[#2eb82e] pb-1 hover:text-[#2eb82e] transition-all">Xem tất cả</button>
+                </div>
+                <div id="featured-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Projects will be rendered here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- PAGE: ABOUT US -->
+    <main id="page-about" class="page-content py-40 px-8">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-20 items-start">
+                <div>
+                    <span class="text-[#2eb82e] font-bold uppercase tracking-widest text-xs">Giới thiệu D&H Realty</span>
+                    <h2 class="text-5xl font-black mt-4 mb-8 uppercase leading-tight">CHÚNG TÔI LÀ AI?</h2>
+                    <div class="space-y-6 text-white/70 leading-relaxed text-sm">
+                        <p><strong>Công ty Cổ phần Bất động sản D&H (D&H Realty)</strong> được thành lập từ những chuyên gia tâm huyết trong lĩnh vực bất động sản. Trải qua hơn một thập kỷ, chúng tôi đã khẳng định vị thế là "Cánh tay nối dài" giữa Chủ đầu tư và Khách hàng.</p>
+                        <p>Với định hướng trở thành tập đoàn đa ngành, lấy Bất động sản làm cốt lõi, D&H Realty tập trung vào sự minh bạch, chuyên nghiệp và đạo đức nghề nghiệp. Chúng tôi không chỉ bán nhà, chúng tôi trao gửi những tổ ấm thực thụ và cơ hội đầu tư sinh lời bền vững.</p>
+                        <p>Các lĩnh vực cốt lõi:</p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>Phân phối Bất động sản cao cấp (Vinhomes, Masterise, Sun Group...)</li>
+                            <li>Phát triển các dự án Nhà ở xã hội cho công nhân, người thu nhập thấp.</li>
+                            <li>Tư vấn đầu tư và Quản lý vận hành BĐS.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=600" class="rounded-3xl h-64 w-full object-cover" alt="D&H Office">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=600" class="rounded-3xl h-64 w-full object-cover mt-12" alt="D&H Team">
+                </div>
+            </div>
+
+            <!-- Core Values -->
+            <div class="mt-32 grid md:grid-cols-3 gap-10">
+                <div class="p-10 glass rounded-[2.5rem] border border-white/5 hover:border-[#2eb82e]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#2eb82e]/20 rounded-xl flex items-center justify-center mb-6 text-[#2eb82e] font-bold">01</div>
+                    <h4 class="text-xl font-bold mb-4">Tầm nhìn</h4>
+                    <p class="text-xs text-white/50 leading-loose">Trở thành đơn vị kinh doanh và dịch vụ bất động sản hàng đầu, kiến tạo hệ sinh thái bất động sản minh bạch và chuyên nghiệp nhất Việt Nam.</p>
+                </div>
+                <div class="p-10 glass rounded-[2.5rem] border border-white/5 hover:border-[#2eb82e]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#2eb82e]/20 rounded-xl flex items-center justify-center mb-6 text-[#2eb82e] font-bold">02</div>
+                    <h4 class="text-xl font-bold mb-4">Sứ mệnh</h4>
+                    <p class="text-xs text-white/50 leading-loose">Vì một cuộc sống hạnh phúc và thịnh vượng cho khách hàng thông qua những sản phẩm bất động sản giá trị thực, pháp lý rõ ràng.</p>
+                </div>
+                <div class="p-10 glass rounded-[2.5rem] border border-white/5 hover:border-[#2eb82e]/30 transition-all">
+                    <div class="w-12 h-12 bg-[#2eb82e]/20 rounded-xl flex items-center justify-center mb-6 text-[#2eb82e] font-bold">03</div>
+                    <h4 class="text-xl font-bold mb-4">Giá trị cốt lõi</h4>
+                    <p class="text-xs text-white/50 leading-loose">TÂM - TÍN - NHÂN. Làm việc bằng cái tâm, giữ trọn chữ tín và xây dựng mối quan hệ nhân văn với cộng đồng.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: PROJECTS -->
+    <main id="page-projects" class="page-content py-40 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-black uppercase mb-6">HỆ THỐNG <span class="text-[#2eb82e]">DỰ ÁN</span></h2>
+                <div class="flex flex-wrap justify-center gap-4 mt-10">
+                    <button onclick="filterProjects('all', event)" class="project-tab active px-6 py-2 border border-[#2eb82e] text-[#2eb82e] rounded-full text-[10px] font-bold uppercase transition-all">Tất cả</button>
+                    <button onclick="filterProjects('bac', event)" class="project-tab px-6 py-2 border border-white/10 rounded-full text-[10px] font-bold uppercase transition-all">Miền Bắc</button>
+                    <button onclick="filterProjects('trung', event)" class="project-tab px-6 py-2 border border-white/10 rounded-full text-[10px] font-bold uppercase transition-all">Miền Trung</button>
+                    <button onclick="filterProjects('nam', event)" class="project-tab px-6 py-2 border border-white/10 rounded-full text-[10px] font-bold uppercase transition-all">Miền Nam</button>
+                </div>
+            </div>
+            <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: NEWS -->
+    <main id="page-news" class="page-content py-40 px-8">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-5xl font-black uppercase mb-16 text-center">TIN TỨC & <span class="text-[#8b5e3c]">SỰ KIỆN</span></h2>
+            <div id="news-grid" class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- News items injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: CONTACT -->
+    <main id="page-contact" class="page-content py-40 px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-20">
+                <div>
+                    <h2 class="text-5xl font-black uppercase mb-8">KẾT NỐI VỚI CHÚNG TÔI</h2>
+                    <p class="text-white/50 mb-12">Đội ngũ chuyên viên tư vấn của D&H Realty luôn sẵn sàng giải đáp mọi thắc mắc của quý khách hàng 24/7.</p>
+                    
+                    <div class="space-y-8 mb-12">
+                        <div class="flex gap-6 items-start">
+                            <div class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-[#2eb82e]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm uppercase mb-1">Trụ sở chính</h4>
+                                <p class="text-xs text-white/50">Số 82 Nguyễn Tuân, Thanh Xuân, Hà Nội</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-start">
+                            <div class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-[#2eb82e]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm uppercase mb-1">Điện thoại</h4>
+                                <p class="text-xs text-white/50">0816.455.288</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-start">
+                            <div class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-[#2eb82e]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm uppercase mb-1">Email</h4>
+                                <p class="text-xs text-white/50">infor@dhrealty.vn</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="w-full h-64 rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.7876793132717!2d105.8000455759681!3d20.999142788719232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac9695d73955%3A0xc39f9b5a864e430c!2zODIgTmd1eeG7hW4gVHXDom4sIFRoYW5oIFh1w6JuIFRydW5nLCBUaGFuaCBYdcOibiwgSMOgIE7hu5lpLCBWaeG7hXQgTmFt!5e0!3m2!1svi!2s!4v1716388482481!5m2!1svi!2s" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="glass p-12 rounded-[3rem] border border-white/5">
+                    <h3 class="text-2xl font-bold mb-8">GỬI YÊU CẦU TƯ VẤN</h3>
+                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất.');">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-[10px] uppercase font-bold text-white/40 ml-2">Họ và tên</label>
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-[#2eb82e] outline-none transition-all text-sm" placeholder="Nguyễn Văn A" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] uppercase font-bold text-white/40 ml-2">Số điện thoại</label>
+                                <input type="tel" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-[#2eb82e] outline-none transition-all text-sm" placeholder="09xx xxx xxx" required>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-bold text-white/40 ml-2">Email (không bắt buộc)</label>
+                            <input type="email" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-[#2eb82e] outline-none transition-all text-sm" placeholder="example@gmail.com">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-bold text-white/40 ml-2">Nhu cầu tư vấn</label>
+                            <select class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-[#2eb82e] outline-none transition-all text-sm">
+                                <option class="bg-[#070907]">Tìm mua căn hộ</option>
+                                <option class="bg-[#070907]">Đầu tư đất nền</option>
+                                <option class="bg-[#070907]">Nhà ở xã hội</option>
+                                <option class="bg-[#070907]">Khác</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] uppercase font-bold text-white/40 ml-2">Lời nhắn</label>
+                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-[#2eb82e] outline-none transition-all text-sm" placeholder="Nhập yêu cầu của bạn..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-5 bg-[#1a5d1a] hover:bg-[#2eb82e] rounded-2xl font-bold uppercase tracking-widest text-sm shadow-xl shadow-[#1a5d1a]/20 transition-all">Gửi thông tin ngay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FULL FOOTER -->
+    <footer class="py-24 px-8 border-t border-white/5 bg-[#0a0d0a]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
+            <div class="lg:col-span-1">
+                <div class="flex flex-col leading-none font-black text-3xl tracking-tighter mb-8">
+                    <span style="color: var(--brand-green-light)">D&H</span>
+                    <span style="color: var(--brand-brown-light); font-size: 0.7rem; letter-spacing: 0.2rem">REALTY</span>
+                </div>
+                <p class="text-xs text-white/40 leading-relaxed mb-8">
+                    Công ty Cổ phần Bất động sản D&H - Nơi khởi đầu cho sự thịnh vượng. Chúng tôi cam kết mang lại giá trị thực cho từng mét vuông đất.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-[#2eb82e] transition-all">F</a>
+                    <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-[#2eb82e] transition-all">Y</a>
+                    <a href="#" class="w-10 h-10 glass rounded-full flex items-center justify-center hover:bg-[#2eb82e] transition-all">L</a>
+                </div>
+            </div>
+            
+            <div>
+                <h5 class="text-[#2eb82e] text-[10px] font-bold uppercase mb-8 tracking-[0.2em]">Trụ sở & Chi nhánh</h5>
+                <ul class="space-y-6">
+                    <li>
+                        <p class="text-[10px] text-white/60 font-bold uppercase mb-1">Trụ sở Hà Nội</p>
+                        <p class="text-xs text-white/30">Số 82 Nguyễn Tuân, Thanh Xuân, Hà Nội</p>
+                    </li>
+                    <li>
+                        <p class="text-[10px] text-white/60 font-bold uppercase mb-1">Chi nhánh Bắc Ninh</p>
+                        <p class="text-xs text-white/30">KĐT Đại Hoàng Long, TP. Bắc Ninh</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-[#2eb82e] text-[10px] font-bold uppercase mb-8 tracking-[0.2em]">Dịch vụ</h5>
+                <ul class="space-y-4 text-xs text-white/30 font-bold uppercase">
+                    <li class="hover:text-[#2eb82e] cursor-pointer" onclick="showPage('projects')">Bất động sản nghỉ dưỡng</li>
+                    <li class="hover:text-[#2eb82e] cursor-pointer" onclick="showPage('projects')">Căn hộ chung cư</li>
+                    <li class="hover:text-[#2eb82e] cursor-pointer" onclick="showPage('projects')">Nhà ở xã hội</li>
+                    <li class="hover:text-[#2eb82e] cursor-pointer" onclick="showPage('projects')">Đất nền thổ cư</li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-[#2eb82e] text-[10px] font-bold uppercase mb-8 tracking-[0.2em]">Đăng ký nhận tin</h5>
+                <p class="text-xs text-white/30 mb-6">Nhận thông tin dự án mới nhất và chính sách bán hàng hấp dẫn.</p>
+                <div class="relative">
+                    <input type="email" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-xs outline-none focus:border-[#2eb82e]" placeholder="Email của bạn...">
+                    <button class="absolute right-1 top-1 bg-[#1a5d1a] p-2 rounded-full hover:bg-[#2eb82e] transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[10px] text-white/20 uppercase font-bold tracking-widest">© 2024 D&H Realty. All rights reserved.</p>
+            <div class="flex gap-8 text-[9px] text-white/20 uppercase font-bold tracking-widest">
+                <a href="#" class="hover:text-white transition-all">Chính sách bảo mật</a>
+                <a href="#" class="hover:text-white transition-all">Điều khoản sử dụng</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const projectsData = [
+            // MIỀN BẮC
+            { id: 1, category: 'bac', name: 'QMS Top Tower Tố Hữu', location: 'Hà Nội', img: 'https://images.unsplash.com/photo-1545324418-f1d3ac157306?auto=format&fit=crop&w=800', desc: 'Dự án căn hộ biểu tượng cao cấp tại trung tâm Mỹ Đình - Hà Đông.', featured: true },
+            { id: 2, category: 'bac', name: 'Hausman Premium', location: 'Cầu Giấy, Hà Nội', img: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=800', desc: 'Kiến trúc Pháp tinh tế, tiêu chuẩn sống resort ngay trong phố.', featured: true },
+            { id: 3, category: 'bac', name: 'NOXH Việt Thắng', location: 'Bắc Ninh', img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800', desc: 'Dự án nhà ở xã hội quy mô lớn cho công nhân viên KCN.', featured: true },
+            { id: 4, category: 'bac', name: 'Phố Nối House', location: 'Hưng Yên', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800', desc: 'Khu đô thị hiện đại bậc nhất tại tâm điểm kinh tế Hưng Yên.' },
+            // MIỀN TRUNG
+            { id: 5, category: 'trung', name: 'Sonasea Vân Đồn Harbor', location: 'Quảng Ninh', img: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800', desc: 'Đại đô thị du lịch nghỉ dưỡng 5 sao ven vịnh Bái Tử Long.' },
+            { id: 6, category: 'trung', name: 'FLC Quy Nhơn Luxury Resort', location: 'Bình Định', img: 'https://images.unsplash.com/photo-1590674899484-13da0d1b58f5?auto=format&fit=crop&w=800', desc: 'Tổ hợp nghỉ dưỡng cao cấp với sân golf 36 hố đẹp nhất Châu Á.' },
+            // MIỀN NAM
+            { id: 7, category: 'nam', name: 'Vinhomes Grand Park', location: 'Thủ Đức, TP.HCM', img: 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=800', desc: 'Thành phố công viên thông minh quy mô 271ha đẳng cấp quốc tế.' },
+            { id: 8, category: 'nam', name: 'Masteri Centre Point', location: 'Quận 9, TP.HCM', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800', desc: 'Khu căn hộ Compound cao cấp trung tâm đại đô thị Vinhomes.' }
+        ];
+
+        const newsData = [
+            { id: 1, title: 'Thị trường BĐS 2024: Phân khúc nào lên ngôi?', img: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800', date: '20/05/2024', tag: 'Thị trường' },
+            { id: 2, title: 'D&H Realty ký kết hợp tác chiến lược dự án QMS Top Tower', img: 'https://images.unsplash.com/photo-1454165833767-131435bb4496?auto=format&fit=crop&w=800', date: '15/05/2024', tag: 'Sự kiện' },
+            { id: 3, title: 'Lễ bàn giao căn hộ tại dự án Hausman Cầu Giấy', img: 'https://images.unsplash.com/photo-1590674899484-13da0d1b58f5?auto=format&fit=crop&w=800', date: '10/05/2024', tag: 'Dự án' }
+        ];
+
+        function showPage(pageId) {
+            const nextPage = document.getElementById('page-' + pageId);
+            if (!nextPage) return;
+
+            // Update Nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if(link.dataset.page === pageId) link.classList.add('active');
+            });
+
+            const currentPage = document.querySelector('.page-content.active');
+            if (currentPage && currentPage !== nextPage) {
+                gsap.to(currentPage, { 
+                    opacity: 0, 
+                    y: 20, 
+                    duration: 0.3, 
+                    onComplete: () => {
+                        currentPage.classList.remove('active');
+                        activatePage(nextPage, pageId);
+                    }
+                });
+            } else {
+                activatePage(nextPage, pageId);
+            }
+        }
+
+        function activatePage(element, id) {
+            element.classList.add('active');
+            gsap.fromTo(element, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+            
+            if(id === 'home') {
+                startStatCounter();
+                renderFeaturedProjects();
+            }
+            if(id === 'projects') renderProjects('all');
+            if(id === 'news') renderNews();
+            window.scrollTo(0,0);
+        }
+
+        function renderProjects(filter) {
+            const grid = document.getElementById('project-grid');
+            if (!grid) return;
+            const filtered = filter === 'all' ? projectsData : projectsData.filter(p => p.category === filter);
+            grid.innerHTML = filtered.map(p => createProjectCard(p)).join('');
+            gsap.from("#project-grid > div", { opacity: 0, y: 30, duration: 0.5, stagger: 0.1 });
+        }
+
+        function renderFeaturedProjects() {
+            const grid = document.getElementById('featured-grid');
+            if (!grid) return;
+            const featured = projectsData.filter(p => p.featured).slice(0, 3);
+            grid.innerHTML = featured.map(p => createProjectCard(p)).join('');
+        }
+
+        function renderNews() {
+            const grid = document.getElementById('news-grid');
+            if (!grid) return;
+            grid.innerHTML = newsData.map(n => `
+                <article class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-[2rem] mb-6 h-60 border border-white/5">
+                        <img src="${n.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute top-4 left-4 bg-[#2eb82e] px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider">${n.tag}</div>
+                    </div>
+                    <p class="text-white/40 text-[10px] font-bold mb-2">${n.date}</p>
+                    <h4 class="text-xl font-bold leading-tight group-hover:text-[#2eb82e] transition-colors mb-4">${n.title}</h4>
+                </article>
+            `).join('');
+        }
+
+        function createProjectCard(p) {
+            return `
+                <div class="project-card glass rounded-[2.5rem] overflow-hidden border border-white/5 group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md px-4 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest text-white border border-white/10">
+                            ${p.location}
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-bold mb-4 group-hover:text-[#2eb82e] transition-colors">${p.name}</h4>
+                        <p class="text-xs text-white/40 mb-8 leading-relaxed line-clamp-2">${p.desc}</p>
+                        <button class="w-full py-4 bg-white/5 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#2eb82e] transition-all border border-white/5">Xem chi tiết</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function filterProjects(filter, event) {
+            document.querySelectorAll('.project-tab').forEach(btn => {
+                btn.classList.remove('active', 'border-[#2eb82e]', 'text-[#2eb82e]');
+                btn.classList.add('border-white/10');
+            });
+            event.currentTarget.classList.add('active', 'border-[#2eb82e]', 'text-[#2eb82e]');
+            renderProjects(filter);
+        }
+
+        function startStatCounter() {
+            document.querySelectorAll('.stat-number').forEach(stat => {
+                const target = parseInt(stat.dataset.target);
+                let current = 0;
+                const update = () => {
+                    const step = target / 50;
+                    if(current < target) {
+                        current += step;
+                        stat.innerText = Math.ceil(current) + (target > 500 ? '+' : '');
+                        requestAnimationFrame(update);
+                    } else {
+                        stat.innerText = target + (target > 500 ? '+' : '');
+                    }
+                }
+                update();
+            });
+        }
+
+        window.onload = () => {
+            const cursor = document.getElementById('cursor');
+            window.addEventListener('mousemove', (e) => {
+                gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+            });
+            
+            // Initial data
+            renderFeaturedProjects();
+            startStatCounter();
+        }
+    </script>
+</body>
+</html>
